@@ -11,7 +11,7 @@ Download the latest version, extract it, go in the svgfig folder and install it 
 
 	sudo python setup.py install
 
-Then they make the program executable and run it:
+Then they make the program executable, adjust the parameters in the header of the source code and run it:
 
 	sudo chmod +x svgGen.py
 	./svgGen.py

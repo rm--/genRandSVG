@@ -18,7 +18,7 @@ import random 		#random numbers gen
 #import copy		#copy Objects
 
 ####################################
-#########params
+#########parameters
 ####################################
 
 SVGInput_FileName="plainSVG1.svg"
