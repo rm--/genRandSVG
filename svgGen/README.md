@@ -7,7 +7,7 @@ xx
 
 required: library svgfig https://code.google.com/p/svgfig/
 
-Download the latest version, extract it, go in the svgfig folder and install it with(on a Debian-based Linux):
+Download the latest version, extract it, go in the svgfig folder and install it with (on a Debian-based Linux):
 
 	sudo python setup.py install
 
