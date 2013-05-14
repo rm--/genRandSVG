@@ -1,11 +1,25 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" height="1052.3622" width="744.09448" version="1.1" xmlns:cc="http://creativecommons.org/ns#" id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" height="1052.3622" width="744.09448" version="1.1" xmlns:cc="http://creativecommons.org/ns#" id="svg2984" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-<defs id="defs4" />
+<defs id="defs2986">
 
-<metadata id="metadata7">
+<marker refY="0" refX="0" style="overflow:visible" orient="auto" id="Arrow1Mend">
+
+<path style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" transform="matrix(-0.4,0,0,-0.4,-4,0)" id="path3794" d="M 0,0 5,-5 -12.5,0 5,5 0,0 z" />
+
+</marker>
+
+<marker refY="0" refX="0" style="overflow:visible" orient="auto" id="Arrow2Lend">
+
+<path style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" transform="matrix(-1.1,0,0,-1.1,-1.1,0)" id="path3806" d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z" />
+
+</marker>
+
+</defs>
+
+<metadata id="metadata2989">
 
 <rdf:RDF>
 
@@ -27,7 +41,7 @@ image/svg+xml</dc:format>
 
 <g id="layer1">
 
-<path style="fill:#7da248;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 222.23356,343.2351 C 390.453160051,344.623521694 248.196780466,-25.8889563715 -263.523085821,253.532696947 L 57.9418580544,-340.282380198 -96.7033350442,-465.279319475 438.256591129,492.859338122 c 243.194109982,-293.772152786 -95.7414734466,-378.198675753 2.57785364943,-227.696010405 25.0800908812,71.4906935714 -173.442781647,191.198151718 -236.575868269,187.404447097 z" id="path3803" />
+<path style="fill:#ffd42a;stroke:#000000;stroke-width:22.70000076;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:21;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-start:url(#Arrow1Mend)" d="M 420.869584619,705.507135747 205.079179824,127.728129402 293.889985891,129.491550813 C 0,0 152.011125051,233.027430059 68.57143,274.28571 C 171.195148743,330.065264653 460,66.647897 371.329777419,183.53235488 L 263.976748803,940.657396745 379.59076434,326.903150183 207.715273763,771.442125283 484.534808816,428.849862421 647.851610607,232.328715915 Z" id="path2992" />
 
 </g>
 

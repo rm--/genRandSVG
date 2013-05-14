@@ -1,30 +1,44 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+#install lib: sudo python setup.py install
+#works only with plainSVG
+
+
 # 2do:
+	#Image should have a minimum area
+	#test if file exists
 	#test with plain and inkscape SVG
 	#conventions variablenames
 	# distinguish between width and height (different maxima)
-	# combine the two for loops, roll the dice for index later
 	## if the el.isalpha == true -> roll the dice again
-	# create structure with methods, commandline arguments like input, number
+	# create structure with methods, commandline arguments like input, number - really necessary?
 	## of SVGs to be generated
-
+	#http://de.wikipedia.org/wiki/Gau%C3%9Fsche_Trapezformel
 
 
 import svgfig  		#parse SVG
 import random 		#random numbers gen
 #import re 			#regex
 #import copy		#copy Objects
+#from sets import set 
+import ast
+
 
 ####################################
-#########parameters
+#########params
 ####################################
 
-SVGInput_FileName="plainSVG1.svg"
+SVGInput_FileName="plainSVG5.svg"
 SVGOutput_FileNameTemplate="genSVG"
-numImages=5
-substitutionPercent=0.6					#specifies how many Coord be replaced
+numImages=15
+substitutionPercent=.6				#specifies how many Coord be replaced
+
+xstart=120
+xstop=680
+ystart=120
+ystop=980
+
 
 ####################################
 #########functions
@@ -37,9 +51,14 @@ def loadSVGandGetXML(filename):
 
 
 def getPathD_asList(SVGobj):
-	SVGpathD=SVGobj[2,0,u'd']
+	try:
+		#print SVGobj[2,0,u'd'],"\n\n\n\n"
+		SVGpathD=SVGobj[2,0,u'd']
+	except IndexError:
+	 	#print SVGobj[2,u'd'],"\n\n\n\n"
+		SVGpathD=SVGobj[2,u'd']
 	#print SVGpathD,"\n"
-	d_List = SVGpathD.split()	#split() returns a list of esments
+	d_List = unicode.split(SVGpathD)	#split() returns a list of esments
 								#which are seperated by spaces(default) in the original string
 	return d_List
 
@@ -55,18 +74,23 @@ def getNumberOfCoords(d_List):
 
 def getRandomIndex(numCoords):
 	# obtain the random index to be replaced 
-	randIndex=random.randint(0,numCoords)
+	while True:
+		randIndex=random.randint(0,numCoords)
+		inList=isIndexInList(randIndex,indexList)
+		if inList:
+			continue
+		else:
+			indexList.append(randIndex)
+			break
 	return randIndex
 
 
+#start and stop has a connection to width and height
+# get two random coordinates 
+# up to now with fixed range
 def getRandomCoords():
-	#start and stop has a connection to width and height
-	# get two random coordinates 
-	# up to now with fixed range
-	start=-500
-	stop=500
-	rand1=random.uniform(start,stop)
-	rand2=random.uniform(start,stop)
+	rand1=random.uniform(xstart,xstop)
+	rand2=random.uniform(ystart,ystop)
 	#validate coords with a seperate function/strategy
 	#print "rand1 rand2: ", rand1, rand2, "\n"
 	randCoords=str(rand1) + "," + str(rand2)
@@ -83,12 +107,14 @@ def substituteCoordsAndGet_d_List(d_List,randIndex,randCoords):			#call by value
 	for index in range(0,len(d_List)):
 		#print d_List[index][0].isalpha()
 		if not d_List[index][0].isalpha():
-			#print el, "\n"
-			numCoords+=1
+			#print randIndex,numCoords, "\n"
 			if numCoords == randIndex:
-				print "=========>",d_List[index], "\n"
+				#print "=========>",d_List[index], "\n"
 				d_List[index]=randCoords
-				print "===============>",d_List[index], "\n"
+				#print "===============>",d_List[index], "\n"
+				break
+			else:
+				numCoords+=1
 	return d_List
 
 
@@ -104,10 +130,53 @@ def transform_d_List_toPathD_AndGet(d_List):
 
 
 def modifySVGAndSave(newPathD,SVGobj,currentImg):
-	SVGobj[2,0,u'd']=newPathD
+	try:
+		SVGobj[2,0,u'd']=newPathD
+	except IndexError:
+		SVGobj[2,u'd']=newPathD
 	outputFileName=SVGOutput_FileNameTemplate+str(currentImg)+".svg"
-	print outputFileName
+	print outputFileName,"\n========================\n"
 	SVGobj.save(outputFileName)
+
+
+#Indices that have been used should be used a second time
+def isIndexInList(index,indexList):
+	if index in indexList:
+		return True
+	else:
+		return False		
+
+
+#The letters must be capitalized, otherwise you have no absolute coordinates.
+#When using the absolute coordinates must be made negative to positive, as they would otherwise not on the image.
+def normalizeSVG(d_List):
+	for index in range(0,len(d_List)):
+		if d_List[index].isupper():
+			continue
+		elif d_List[index][0].isalpha() and d_List[index].islower():
+			#print "alpha:",d_List[index]
+			d_List[index]=unicode.upper(d_List[index][0])
+		else:
+			#print "!alpha:",d_List[index]
+			testCoord = unicode.split(d_List[index],",")
+			#print "testCoord:", testCoord
+			coord1=ast.literal_eval(testCoord[0])
+			if coord1 < 0:
+				#print "neg:",coord1
+				coord1=-coord1
+			coord2=ast.literal_eval(testCoord[1])
+			if coord2 < 0:
+				#print "neg:",coord2
+				coord2=-coord2
+			d_List[index]=str(coord1) + "," + str(coord2)
+	newPathD = transform_d_List_toPathD_AndGet(d_List)
+	
+	try:
+		SVGobj[2,0,u'd']=newPathD
+	except IndexError:
+		SVGobj[2,u'd']=newPathD
+	SVGobj.save(SVGInput_FileName)
+
 
 
 ####################################
@@ -120,6 +189,8 @@ SVGobj=loadSVGandGetXML(SVGInput_FileName)
 d_List=getPathD_asList(SVGobj)
 #print "d_List:",d_List
 
+normalizeSVG(d_List)
+
 numCoords=getNumberOfCoords(d_List)
 print "numCoords:",numCoords
 
@@ -128,11 +199,12 @@ numSubstitutions=int(numCoords*substitutionPercent)
 print "numSubstitutions:",numSubstitutions
 
 
-for currentImg in range(0,numImages):	
+for currentImg in range(1,numImages+1):	
+	indexList = []
 	for coordNum in range(0,numSubstitutions):
+		
 		randIndex=getRandomIndex(numCoords)
-		print "randIndex",coordNum,": ",randIndex
-
+		#print "randIndex",coordNum,": ",randIndex
 
 		#idea: test if Coords differnt enough from other images
 		##newCoordsOK=false
@@ -141,7 +213,7 @@ for currentImg in range(0,numImages):
 		##	newCoordsOK=validateCoords(randCoords)		#concate Coords later?
 		##	}while(newCoordsOK==true)
 
-
+		
 		randCoords=getRandomCoords()
 		print "randCoords",coordNum,":" ,randCoords,"\n"
 
