@@ -7,13 +7,13 @@
 
 <marker refY="0" refX="0" style="overflow:visible" orient="auto" id="Arrow1Mend">
 
-<path style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" transform="matrix(-0.4,0,0,-0.4,-4,0)" id="path3794" d="M 0,0 5,-5 -12.5,0 5,5 0,0 z" />
+<path id="path3794" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" d="M 0,0 5,-5 -12.5,0 5,5 0,0 z" transform="matrix(-0.4,0,0,-0.4,-4,0)" />
 
 </marker>
 
 <marker refY="0" refX="0" style="overflow:visible" orient="auto" id="Arrow2Lend">
 
-<path style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" transform="matrix(-1.1,0,0,-1.1,-1.1,0)" id="path3806" d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z" />
+<path id="path3806" style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z" transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
 
 </marker>
 
