@@ -34,15 +34,15 @@ from os import *	#system function like create folder
 SVGInput_FileName="plainSVG2.svg"
 #SVGOutput_FileNameTemplate="genSVG"
 numImages=5
-substitutionPercent=.4				#specifies how many Coord be replaced
+substitutionPercent=.6				#specifies how many Coord be replaced
 
 #DIN A4:(744,1052)
 imageSizeX=744
 imageSizeY=1052
 
 
-minimumAreaPercentX=.3
-minimumAreaPercentY=.3
+minimumAreaPercentX=.7
+minimumAreaPercentY=.7
 #PercentPointsInQuadrants=.4
 pointsMustBeInQuadrants=4
 
@@ -231,14 +231,14 @@ def areaTest(d_List):
 #ranges of randomCoords
 # randomX (xstart,xstop)
 # randomY (ystart,ystop)
-xstart=imageSizeX*0.05
+xstart=imageSizeX*0.02
 print xstart
-xstop=imageSizeX*0.95
+xstop=imageSizeX*0.98
 print xstop
 
-ystart=imageSizeY*0.05
+ystart=imageSizeY*0.02
 print ystart
-ystop=imageSizeX*0.95
+ystop=imageSizeY*0.98
 print ystop
 
 
