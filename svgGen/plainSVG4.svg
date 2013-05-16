@@ -1,35 +1,34 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" height="1052.3622" width="744.09448" version="1.1" xmlns:cc="http://creativecommons.org/ns#" id="svg2984" xmlns:dc="http://purl.org/dc/elements/1.1/">
-
-<defs id="defs2986" />
-
-<metadata id="metadata2989">
-
-<rdf:RDF>
-
-<cc:Work rdf:about="">
-
-<dc:format>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="744.09448"
+   height="1052.3622"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>
 
 image/svg+xml</dc:format>
-
-<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-
-<dc:title />
-
-</cc:Work>
-
-</rdf:RDF>
-
-</metadata>
-
-<g id="layer1">
-
-<path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 111.42857,523.79075 54.28572,385.71428 125.71428,374.28571 C 0,0 31.42857,551.428569 68.57143,274.28571 C 460,515.21933 460,66.647897 460,66.647897 L 220,802.857143 320,74.28571 191.42857,20 300,148.57143 54.28571,365.71428 Z" id="path2992" />
-
-</g>
-
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 109.24946,164.98899 C 608.67558,249.71306 608.67558,249.71306 608.67558,249.71306 L 497.19654,787.04206 C 497.19654,787.04206 499.42612,1036.7551 272.00887,829.40409 44.591618,622.05307 207.35102,390.17666 207.35102,390.17666 z"
+     id="path2983"
+     style="fill:#00ccff;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
 </svg>
-

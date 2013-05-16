@@ -4,47 +4,63 @@
 #install lib: sudo python setup.py install
 #works only with plainSVG
 
+#=========================================================
+#author: René Muhl
+#from: Leipzig, Germany
+#last change: 16.5.2013
+#email: ReneM{dot}github{at}gmail{dot}com
+#=========================================================
 
-# 2do:
+"""
+	2do:
 	#Image should have a minimum area
-	#test if file exists
-	#test with plain and inkscape SVG
 	#conventions variablenames
-	# distinguish between width and height (different maxima)
 	## if the el.isalpha == true -> roll the dice again
 	# create structure with methods, commandline arguments like input, number - really necessary?
-	## of SVGs to be generated
 	#http://de.wikipedia.org/wiki/Gau%C3%9Fsche_Trapezformel
 	#https://code.google.com/p/svgfig/wiki/HowToInstall
+"""
 
 import svgfig  		#parse SVG
 import random 		#random numbers gen
+import ast 			#convert unicode in int/float
+import datetime 	#current date/time
+import math 		#sqrt(), pow()
+import sys 			#exit function
+import os 			#system function like create folder
 #import re 			#regex
 #import copy		#copy Objects
-#from sets import set 
-import ast
-import datetime
-from os import *	#system function like create folder
-
 
 ####################################
 #########params
 ####################################
 
-SVGInput_FileName="plainSVG2.svg"
+###
+SVGInput_FileName="plainSVG4.svg"
+outputDir = "output"
 #SVGOutput_FileNameTemplate="genSVG"
 numImages=5
-substitutionPercent=.6				#specifies how many Coord be replaced
+substitutionPercent=.5				#specifies how many Coord be replaced
 
 #DIN A4:(744,1052)
 imageSizeX=744
 imageSizeY=1052
+###
 
+###
+#for area test
+minimumAreaPercentX=.4
+minimumAreaPercentY=.4
 
-minimumAreaPercentX=.7
-minimumAreaPercentY=.7
-#PercentPointsInQuadrants=.4
-pointsMustBeInQuadrants=4
+#a number between 1-4
+pointsMustBeInQuadrants=3
+###
+
+###
+#for distance test
+#value in pixel (recommended max. 180)
+minimumDistanceTwoPoints=140
+###
 
 ####################################
 #########functions
@@ -60,12 +76,17 @@ def getPathD_asList(SVGobj):
 	try:
 		#print SVGobj[2,0,u'd'],"\n\n\n\n"
 		SVGpathD=SVGobj[2,0,u'd']
-	except IndexError:
+	except:
 	 	#print SVGobj[2,u'd'],"\n\n\n\n"
-		SVGpathD=SVGobj[2,u'd']
+	 	try:
+			SVGpathD=SVGobj[2,u'd']
+		except:
+			print "The picture seems to be stored as InkscapeSVG, please save it as PlainSVG and start the program again."
+			sys.exit()
+
 	#print SVGpathD,"\n"
 	d_List = unicode.split(SVGpathD)	#split() returns a list of esments
-								#which are seperated by spaces(default) in the original string
+										#which are seperated by spaces(default) in the original string
 	return d_List
 
 
@@ -155,37 +176,6 @@ def isIndexInList(index,indexList):
 		return False		
 
 
-#The letters must be capitalized, otherwise you have no absolute coordinates.
-#When using the absolute coordinates must be made negative to positive, as they would otherwise not on the image.
-def normalizeSVG(d_List):
-	for index in range(0,len(d_List)):
-		if d_List[index].isupper():
-			continue
-		elif d_List[index][0].isalpha() and d_List[index].islower():
-			#print "alpha:",d_List[index]
-			d_List[index]=unicode.upper(d_List[index][0])
-		else:
-			#print "!alpha:",d_List[index]
-			testCoord = unicode.split(d_List[index],",")
-			#print "testCoord:", testCoord
-			coord1=ast.literal_eval(testCoord[0])
-			if coord1 < 0:
-				#print "neg:",coordX
-				coord1=-coord1
-			coord2=ast.literal_eval(testCoord[1])
-			if coord2 < 0:
-				#print "neg:",coord2
-				coord2=-coord2
-			d_List[index]=str(coordX) + "," + str(coord2)
-	newPathD = transform_d_List_toPathD_AndGet(d_List)
-	
-	try:
-		SVGobj[2,0,u'd']=newPathD
-	except IndexError:
-		SVGobj[2,u'd']=newPathD
-	SVGobj.save(SVGInput_FileName)
-
-
 #Test whether the image braced a minimum area size.
 #explanation....
 def areaTest(d_List):
@@ -198,7 +188,7 @@ def areaTest(d_List):
 	pointsInQuadrants=0
 	for index in range(0,len(d_List)):
 		if not d_List[index][0].isalpha():
-			print "num:",d_List[index]
+			#print "num:",d_List[index]
 			testCoord = unicode.split(d_List[index],",")
 			coordX=ast.literal_eval(testCoord[0])
 			coordY=ast.literal_eval(testCoord[1])
@@ -215,7 +205,8 @@ def areaTest(d_List):
 				testRightBelow=True
 				pointsInQuadrants+=1
 
-		print "pointsInQuadrants:",pointsInQuadrants
+		#print "pointsMustBeInQuadrants:",pointsMustBeInQuadrants
+		#print "pointsInQuadrants:",pointsInQuadrants
 		if pointsInQuadrants >= pointsMustBeInQuadrants:
 			testSuccess=True
 			break
@@ -223,11 +214,46 @@ def areaTest(d_List):
 	return testSuccess
 
 
+#To reduce acute, slender figure parts, a minimum distance between all points must be met.
+def distanceTest(d_List):
+	testSuccess=True
+	allCoords=[]
+	distance=0
+	for index1 in range(0,len(d_List)):
+		if not d_List[index1][0].isalpha():
+			#print "num1:",d_List[index1]
+			testCoord1 = unicode.split(d_List[index1],",")
+			coordX1=ast.literal_eval(testCoord1[0])
+			coordY1=ast.literal_eval(testCoord1[1])
+			for index2 in range(0,len(d_List)):
+				if index1 != index2 and not d_List[index2][0].isalpha():
+					#print "num2:",d_List[index2]
+					testCoord2 = unicode.split(d_List[index2],",")
+					coordX2=ast.literal_eval(testCoord2[0])
+					coordY2=ast.literal_eval(testCoord2[1])
+					distance=math.sqrt(math.pow(coordX2-coordX1,2)+math.pow(coordY2-coordY1,2))
+					#print "distance:",distance
+					if distance != 0 and distance<minimumDistanceTwoPoints:
+						testSuccess=False
+						break
+
+	return testSuccess
+
 
 ####################################
 #########main program
 ####################################
 
+#Check if folder exists, if not then it will be created.
+path = "." + os.sep + outputDir
+if not os.path.exists(path):
+	print "dir doesn't exists"
+	os.mkdir(path)
+	print "output directory \" "+ outputDir +" \"created."
+else:
+    print "dir exists"
+
+	
 #ranges of randomCoords
 # randomX (xstart,xstop)
 # randomY (ystart,ystop)
@@ -254,13 +280,12 @@ Y_belowLimit=imageSizeY*(1-minimumAreaPercentY)/2
 print Y_belowLimit
 
 
-
-
 for currentImg in range(1,numImages+1):	
 
-
-	testSuccess=False
-	while not testSuccess:
+	testSuccess1=False
+	testSuccess2=False
+	while not testSuccess1 or not testSuccess2:
+		print "\n :::::::: new try.... :::::::: \n"
 		indexList = []
 		SVGobj=loadSVGandGetXML(SVGInput_FileName)
 		#print "SVGobj:",SVGobj
@@ -268,13 +293,8 @@ for currentImg in range(1,numImages+1):
 		d_List=getPathD_asList(SVGobj)
 		#print "d_List:",d_List
 
-		#normalizeSVG(d_List)
-
 		numCoords=getNumberOfCoords(d_List)
-		print "numCoords:",numCoords
-
-		#pointsMustBeInQuadrants=PercentPointsInQuadrants*numCoords
-		print "pointsMustBeInQuadrants:",pointsMustBeInQuadrants
+		#print "numCoords:",numCoords
 
 		numSubstitutions=int(numCoords*substitutionPercent)
 		print "numSubstitutions:",numSubstitutions
@@ -285,14 +305,6 @@ for currentImg in range(1,numImages+1):
 				
 				randIndex=getRandomIndex(numCoords)
 				#print "randIndex",coordNum,": ",randIndex
-
-				#idea: test if Coords differnt enough from other images
-				##newCoordsOK=false
-				## do{
-				##	randCoords=getRandomCoords()
-				##	newCoordsOK=validateCoords(randCoords)		#concate Coords later?
-				##	}while(newCoordsOK==true)
-
 				
 				randCoords=getRandomCoords()
 				print "randCoords",coordNum,":" ,randCoords,"\n"
@@ -304,7 +316,9 @@ for currentImg in range(1,numImages+1):
 				newPathD = transform_d_List_toPathD_AndGet(d_List)
 				#print newPathD
 
-			testSuccess=areaTest(d_List)
-			print testSuccess
-			if testSuccess:
+			testSuccess1=areaTest(d_List)
+			testSuccess2=distanceTest(d_List)
+			#print "testSuccess1:",testSuccess1
+			#print "testSuccess2:",testSuccess2
+			if testSuccess1 and testSuccess2:
 				modifySVGAndSave(newPathD,SVGobj)
