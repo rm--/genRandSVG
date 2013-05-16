@@ -20,3 +20,13 @@ Then they make the program executable, adjust the parameters in the header of th
 
 	sudo chmod +x svgGen.py
 	./svgGen.py
+
+
+
+**preview:**
+
+
+function
+
+![ScreenShot](https://raw.github.com/ReneMuhl/python2/master/svgGen/function.png)
+
