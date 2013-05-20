@@ -9,7 +9,7 @@
 #=========================================================
 
 #==============
-#REQUIREMENTS:
+# REQUIREMENTS:
 #==============
 """
 [library]
@@ -28,11 +28,9 @@
 """
 	2do:
 	#change output template name?
-	#copy SVG object and work with it
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
-	#add method descriptions
 	#pack with pip (freeze)?
 """
 
@@ -43,11 +41,9 @@ import datetime 	#current date/time
 import math 		#sqrt(), pow()
 import sys 			#exit function
 import os 			#system function like create folder
-#import re 			#regex
-#import copy		#copy Objects
 
 ####################################
-#########parameter
+######### parameter
 ####################################
 
 ###
@@ -78,7 +74,7 @@ MINIMUM_DISTANCE_TWO_POINTS=140
 ###
 
 ####################################
-#########functions
+######### functions
 ####################################
 
 def loadSVGandGetXML(filename):
@@ -192,7 +188,8 @@ def isIndexInList(index,indexList):
 
 
 #Test whether the image braced a minimum area size.
-#explanation....
+#The parameters INNER_AREA_PERCENT_X, INNER_AREA_PERCENT_Y and define four quadrants.
+#In this quadrant, a certain number of points must lie.
 def areaTest(d_List):
 	testLeftBelow=False
 	testLeftTop=False
@@ -255,8 +252,9 @@ def distanceTest(d_List):
 	return testSuccess
 
 
+
 ####################################
-#########main program
+######### main program
 ####################################
 
 #Check if folder exists, if not then it will be created.
