@@ -28,6 +28,10 @@
 	#conventions variablenames
 	#copy SVG object and work with it
 	#trying DOM or another XML parse technology
+	#add better description
+	#add better image that explains the program
+	#add method descriptions
+	#pack with pip (freeze)?
 """
 
 import svgfig  		#parse SVG
@@ -41,7 +45,7 @@ import os 			#system function like create folder
 #import copy		#copy Objects
 
 ####################################
-#########params
+#########parameter
 ####################################
 
 ###
