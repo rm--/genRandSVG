@@ -123,13 +123,9 @@ def getRandomIndex(numCoords):
 	return randIndex
 
 
-#start and stop has a connection to width and height
-# get two random coordinates 
-# up to now with fixed range
 def getRandomCoords():
 	rand1=random.uniform(xstart,xstop)
 	rand2=random.uniform(ystart,ystop)
-	#validate coords with a seperate function/strategy
 	#print "rand1 rand2: ", rand1, rand2, "\n"
 	randCoords=unicode(rand1) + "," + unicode(rand2)
 	return randCoords
