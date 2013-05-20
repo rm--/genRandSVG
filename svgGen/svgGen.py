@@ -8,24 +8,26 @@
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
-#requirements:
-#[library]
-## --> get library:
-### https://code.google.com/p/svgfig/wiki/RevisionHistory?tm=2
-## --> unpack, go to folder and install library with:
-### sudo python setup.py install
-## if it doesn't work, try this instructions:
-### https://code.google.com/p/svgfig/wiki/HowToInstall
-#######
+#==============
+#REQUIREMENTS:
+#==============
+"""
+[library]
+	get library:
+ 	- https://code.google.com/p/svgfig/wiki/RevisionHistory?tm=2
+ 	unpack, go to folder and install library with:
+  	- sudo python setup.py install
+	if it doesn't work, try this instructions:
+	- https://code.google.com/p/svgfig/wiki/HowToInstall
 #[images]
-## --> image must be plainSVG
-## --> please disable "Allow relative coordinates"at File-Inkscape Preferences-SVG output
-### after that images shouldn't have relative coordinates
-
+	- image must be plainSVG
+	- please disable "Allow relative coordinates"at File-Inkscape Preferences-SVG output
+	-- after that images shouldn't have relative coordinates
+"""
 
 """
 	2do:
-	#conventions variablenames
+	#change output template name?
 	#copy SVG object and work with it
 	#trying DOM or another XML parse technology
 	#add better description
@@ -49,30 +51,30 @@ import os 			#system function like create folder
 ####################################
 
 ###
-SVGInput_FileName="plainSVG5.svg"
-outputDir = "output"
+SVG_INPUT_FILENAME="plainSVG5.svg"
+OUTPUTDIR = "output"
 #SVGOutput_FileNameTemplate="genSVG"
-numImages=150
-substitutionPercent=.5				#specifies how many Coord be replaced
+NUMBER_IMAGES=150
+SUBSTITUTION_PERCENT=.5				#specifies how many Coord be replaced
 
 #DIN A4:(744,1052)
-imageSizeX=744
-imageSizeY=1052
+IMAGE_SIZE_X=744
+IMAGE_SIZE_Y=1052
 ###
 
 ###
 #for area test
-minimumAreaPercentX=.4
-minimumAreaPercentY=.4
+INNER_AREA_PERCENT_X=.4
+INNER_AREA_PERCENT_Y=.4
 
 #a number between 1-4
-pointsMustBeInQuadrants=3
+NUMBER_POINTS_IN_QUADRANTS=3
 ###
 
 ###
 #for distance test
 #value in pixel (recommended max. 180)
-minimumDistanceTwoPoints=140
+MINIMUM_DISTANCE_TWO_POINTS=140
 ###
 
 ####################################
@@ -218,9 +220,9 @@ def areaTest(d_List):
 				testRightBelow=True
 				pointsInQuadrants+=1
 
-		#print "pointsMustBeInQuadrants:",pointsMustBeInQuadrants
+		#print "NUMBER_POINTS_IN_QUADRANTS:",NUMBER_POINTS_IN_QUADRANTS
 		#print "pointsInQuadrants:",pointsInQuadrants
-		if pointsInQuadrants >= pointsMustBeInQuadrants:
+		if pointsInQuadrants >= NUMBER_POINTS_IN_QUADRANTS:
 			testSuccess=True
 			break
 
@@ -246,7 +248,7 @@ def distanceTest(d_List):
 					coordY2=ast.literal_eval(testCoord2[1])
 					distance=math.sqrt(math.pow(coordX2-coordX1,2)+math.pow(coordY2-coordY1,2))
 					#print "distance:",distance
-					if distance != 0 and distance<minimumDistanceTwoPoints:
+					if distance != 0 and distance<MINIMUM_DISTANCE_TWO_POINTS:
 						testSuccess=False
 						break
 
@@ -258,11 +260,11 @@ def distanceTest(d_List):
 ####################################
 
 #Check if folder exists, if not then it will be created.
-path = "." + os.sep + outputDir
+path = "." + os.sep + OUTPUTDIR
 if not os.path.exists(path):
 	print "dir doesn't exists"
 	os.mkdir(path)
-	print "output directory \" "+ outputDir +" \"created."
+	print "output directory \" "+ OUTPUTDIR +" \"created."
 else:
     print "dir exists"
 
@@ -270,37 +272,37 @@ else:
 #ranges of randomCoords
 # randomX (xstart,xstop)
 # randomY (ystart,ystop)
-xstart=imageSizeX*0.02
+xstart=IMAGE_SIZE_X*0.02
 print xstart
-xstop=imageSizeX*0.98
+xstop=IMAGE_SIZE_X*0.98
 print xstop
 
-ystart=imageSizeY*0.02
+ystart=IMAGE_SIZE_Y*0.02
 print ystart
-ystop=imageSizeY*0.98
+ystop=IMAGE_SIZE_Y*0.98
 print ystop
 
 
 #Calculate the limits of the test area
-X_rightLimit=imageSizeX*(minimumAreaPercentX+(1-minimumAreaPercentX)/2)
+X_rightLimit=IMAGE_SIZE_X*(INNER_AREA_PERCENT_X+(1-INNER_AREA_PERCENT_X)/2)
 print X_rightLimit
-X_leftLimit=imageSizeX*(1-minimumAreaPercentX)/2
+X_leftLimit=IMAGE_SIZE_X*(1-INNER_AREA_PERCENT_X)/2
 print X_leftLimit
 
-Y_topLimit=imageSizeY*(minimumAreaPercentY+(1-minimumAreaPercentY)/2)
+Y_topLimit=IMAGE_SIZE_Y*(INNER_AREA_PERCENT_Y+(1-INNER_AREA_PERCENT_Y)/2)
 print Y_topLimit
-Y_belowLimit=imageSizeY*(1-minimumAreaPercentY)/2
+Y_belowLimit=IMAGE_SIZE_Y*(1-INNER_AREA_PERCENT_Y)/2
 print Y_belowLimit
 
 
-for currentImg in range(1,numImages+1):	
+for currentImg in range(1,NUMBER_IMAGES+1):	
 
 	testSuccess1=False
 	testSuccess2=False
 	while not testSuccess1 or not testSuccess2:
 		print "\n :::::::: new try.... :::::::: \n"
 		indexList = []
-		SVGobj=loadSVGandGetXML(SVGInput_FileName)
+		SVGobj=loadSVGandGetXML(SVG_INPUT_FILENAME)
 		#print "SVGobj:",SVGobj
 
 		d_List=getPathD_asList(SVGobj)
@@ -309,7 +311,7 @@ for currentImg in range(1,numImages+1):
 		numCoords=getNumberOfCoords(d_List)
 		#print "numCoords:",numCoords
 
-		numSubstitutions=int(numCoords*substitutionPercent)
+		numSubstitutions=int(numCoords*SUBSTITUTION_PERCENT)
 		print "numSubstitutions:",numSubstitutions
 		if numSubstitutions == 0:
 			print "The number of points to be replaced is too small, please change the \"numSubstitutions\" parameter."
