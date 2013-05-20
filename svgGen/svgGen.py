@@ -1,24 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#install lib: sudo python setup.py install
-#works only with plainSVG
-
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 16.5.2013
+#last change: 20.5.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
+#requirements:
+#[library]
+## --> get library:
+### https://code.google.com/p/svgfig/wiki/RevisionHistory?tm=2
+## --> unpack, go to folder and install library with:
+### sudo python setup.py install
+## if it doesn't work, try this instructions:
+### https://code.google.com/p/svgfig/wiki/HowToInstall
+#######
+#[images]
+## --> image must be plainSVG
+## --> please disable "Allow relative coordinates"at File-Inkscape Preferences-SVG output
+### after that images shouldn't have relative coordinates
+
+
 """
 	2do:
-	#Image should have a minimum area
 	#conventions variablenames
-	## if the el.isalpha == true -> roll the dice again
-	# create structure with methods, commandline arguments like input, number - really necessary?
-	#http://de.wikipedia.org/wiki/Gau%C3%9Fsche_Trapezformel
-	#https://code.google.com/p/svgfig/wiki/HowToInstall
+	#copy SVG object and work with it
+	#trying DOM or another XML parse technology
 """
 
 import svgfig  		#parse SVG
@@ -36,10 +45,10 @@ import os 			#system function like create folder
 ####################################
 
 ###
-SVGInput_FileName="plainSVG4.svg"
+SVGInput_FileName="plainSVG5.svg"
 outputDir = "output"
 #SVGOutput_FileNameTemplate="genSVG"
-numImages=5
+numImages=150
 substitutionPercent=.5				#specifies how many Coord be replaced
 
 #DIN A4:(744,1052)
