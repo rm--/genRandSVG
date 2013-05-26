@@ -4,7 +4,7 @@
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 20.5.2013
+#last change: 27.5.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
@@ -164,11 +164,11 @@ def transform_d_List_toPathD_AndGet(d_List):
 
 
 def modifySVGAndSave(newPathD,SVGobj):
+	now = datetime.datetime.now()
 	try:
 		SVGobj[2,0,u'd']=newPathD
 	except IndexError:
 		SVGobj[2,u'd']=newPathD
-		now = datetime.datetime.now()
 
 	outputFileName="./output/"+str(now)+".svg"
 	print outputFileName,"\n========================\n"
