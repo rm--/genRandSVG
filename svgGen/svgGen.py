@@ -19,7 +19,7 @@
   	- sudo python setup.py install
 	if it doesn't work, try this instructions:
 	- https://code.google.com/p/svgfig/wiki/HowToInstall
-#[images]
+[images]
 	- image must be plainSVG
 	- please disable "Allow relative coordinates"at File-Inkscape Preferences-SVG output
 	-- after that images shouldn't have relative coordinates
@@ -28,6 +28,7 @@
 """
 	2do:
 	#change output template name?
+	##write a file, with last number, read it, count from there and write the new one
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
@@ -50,8 +51,10 @@ import os 			#system function like create folder
 SVG_INPUT_FILENAME="plainSVG5.svg"
 OUTPUTDIR = "output"
 #SVGOutput_FileNameTemplate="genSVG"
-NUMBER_IMAGES=150
+NUMBER_IMAGES=10
 SUBSTITUTION_PERCENT=.5				#specifies how many Coord be replaced
+
+maximalLoopIterations=1000 			#The number of attempts to find a suitable picture
 
 #DIN A4:(744,1052)
 IMAGE_SIZE_X=744
@@ -267,34 +270,36 @@ else:
 # randomX (xstart,xstop)
 # randomY (ystart,ystop)
 xstart=IMAGE_SIZE_X*0.02
-print xstart
+print "xstart:",xstart
 xstop=IMAGE_SIZE_X*0.98
-print xstop
+print "xstop:",xstop
 
 ystart=IMAGE_SIZE_Y*0.02
-print ystart
+print "ystart:",ystart
 ystop=IMAGE_SIZE_Y*0.98
-print ystop
+print "ystop:",ystop
 
 
 #Calculate the limits of the test area
 X_rightLimit=IMAGE_SIZE_X*(INNER_AREA_PERCENT_X+(1-INNER_AREA_PERCENT_X)/2)
-print X_rightLimit
+print "X_rightLimit:",X_rightLimit
 X_leftLimit=IMAGE_SIZE_X*(1-INNER_AREA_PERCENT_X)/2
-print X_leftLimit
+print "X_leftLimit:",X_leftLimit
 
 Y_topLimit=IMAGE_SIZE_Y*(INNER_AREA_PERCENT_Y+(1-INNER_AREA_PERCENT_Y)/2)
-print Y_topLimit
+print "Y_topLimit:",Y_topLimit
 Y_belowLimit=IMAGE_SIZE_Y*(1-INNER_AREA_PERCENT_Y)/2
-print Y_belowLimit
+print "Y_belowLimit:",Y_belowLimit
 
 
 for currentImg in range(1,NUMBER_IMAGES+1):	
 
 	testSuccess1=False
 	testSuccess2=False
-	while not testSuccess1 or not testSuccess2:
-		print "\n :::::::: new try.... :::::::: \n"
+	attempts=0
+	while attempts < maximalLoopIterations and ( not testSuccess1 or not testSuccess2 ):
+		#print "\n :::::::: new try.... :::::::: \n"
+		attempts+=1
 		indexList = []
 		SVGobj=loadSVGandGetXML(SVG_INPUT_FILENAME)
 		#print "SVGobj:",SVGobj
@@ -306,7 +311,7 @@ for currentImg in range(1,NUMBER_IMAGES+1):
 		#print "numCoords:",numCoords
 
 		numSubstitutions=int(numCoords*SUBSTITUTION_PERCENT)
-		print "numSubstitutions:",numSubstitutions
+		#print "numSubstitutions:",numSubstitutions
 		if numSubstitutions == 0:
 			print "The number of points to be replaced is too small, please change the \"numSubstitutions\" parameter."
 		else:
@@ -316,7 +321,7 @@ for currentImg in range(1,NUMBER_IMAGES+1):
 				#print "randIndex",coordNum,": ",randIndex
 				
 				randCoords=getRandomCoords()
-				print "randCoords",coordNum,":" ,randCoords,"\n"
+				#print "randCoords",coordNum,":" ,randCoords,"\n"
 
 				#print_d_List(d_List)
 				d_List = substituteCoordsAndGet_d_List(d_List,randIndex,randCoords)
