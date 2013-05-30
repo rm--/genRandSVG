@@ -4,7 +4,7 @@
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 27.5.2013
+#last change: 30.5.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
@@ -28,7 +28,6 @@
 """
 	2do:
 	#change output template name?
-	##write a file, with last number, read it, count from there and write the new one
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
@@ -290,6 +289,19 @@ Y_topLimit=IMAGE_SIZE_Y*(INNER_AREA_PERCENT_Y+(1-INNER_AREA_PERCENT_Y)/2)
 print "Y_topLimit:",Y_topLimit
 Y_belowLimit=IMAGE_SIZE_Y*(1-INNER_AREA_PERCENT_Y)/2
 print "Y_belowLimit:",Y_belowLimit
+
+
+
+#search for newest file in ./output dir
+## 2do: parse the image number and start counting after
+filelist = os.listdir("./output/")
+if filelist:
+	print filelist
+	filelist = filter(lambda x: not os.path.isdir("./output/" + x), filelist)
+	newest = max(filelist, key=lambda x: os.stat("./output/" + x).st_mtime)
+	print "newest:",newest
+else:
+	print "dir is empty"
 
 
 for currentImg in range(1,NUMBER_IMAGES+1):	
