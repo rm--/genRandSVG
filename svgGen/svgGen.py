@@ -295,7 +295,7 @@ print "Y_belowLimit:",Y_belowLimit
 #search for newest file in ./output dir
 ## 2do: parse the image number and start counting after
 filelist = os.listdir("./output/")
-if filelist:
+if filelist:  		#way to test if "filelist"/dir is not empty
 	print filelist
 	filelist = filter(lambda x: not os.path.isdir("./output/" + x), filelist)
 	newest = max(filelist, key=lambda x: os.stat("./output/" + x).st_mtime)
