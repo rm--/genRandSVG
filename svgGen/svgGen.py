@@ -4,7 +4,7 @@
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 30.5.2013
+#last change: 2.6.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
@@ -23,11 +23,12 @@
 	- image must be plainSVG
 	- please disable "Allow relative coordinates"at File-Inkscape Preferences-SVG output
 	-- after that images shouldn't have relative coordinates
+[misc]
+	- program has to be started from the directory "/svgGen/" with ./svgGen.py
 """
 
 """
 	2do:
-	#change output template name?
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
@@ -49,8 +50,7 @@ import os 			#system function like create folder
 ###
 SVG_INPUT_FILENAME="plainSVG5.svg"
 OUTPUTDIR = "output"
-#SVGOutput_FileNameTemplate="genSVG"
-NUMBER_IMAGES=10
+NUMBER_IMAGES=5
 SUBSTITUTION_PERCENT=.5				#specifies how many Coord be replaced
 
 maximalLoopIterations=1000 			#The number of attempts to find a suitable picture
@@ -160,21 +160,21 @@ def transform_d_List_toPathD_AndGet(d_List):
 		if d_List[len(d_List)-1] == newDListEl:
 			newPathD += newDListEl
 		else:
-			newPathD += newDListEl
-			newPathD += " "
+			newPathD += newDListEl + " "
 	return newPathD
 
 
-def modifySVGAndSave(newPathD,SVGobj):
+def modifySVGAndSave(newPathD,SVGobj,currentImgNumber):
 	now = datetime.datetime.now()
 	try:
 		SVGobj[2,0,u'd']=newPathD
 	except IndexError:
 		SVGobj[2,u'd']=newPathD
 
-	outputFileName="./output/"+str(now)+".svg"
+	outputFileName=str(newest+currentImgNumber)+".svg"
+	outputString="./"+ OUTPUTDIR +"/"+outputFileName
 	print outputFileName,"\n========================\n"
-	SVGobj.save(outputFileName)
+	SVGobj.save(outputString)
 
 
 #Indices that have been used should be used a second time
@@ -250,6 +250,24 @@ def distanceTest(d_List):
 	return testSuccess
 
 
+def getNumberFromString(x):
+    return int(''.join(ele for ele in x if ele.isdigit()))
+
+
+def getNewestImageNumber():
+	newest=0
+	filelist = os.listdir("./"+ OUTPUTDIR +"/")
+	if filelist:  		#way to test if "filelist"/dir is not empty
+		print filelist
+		filelist = filter(lambda x: not os.path.isdir("./"+ OUTPUTDIR +"/" + x), filelist)
+		newest = max(filelist, key=lambda x: os.stat("./"+ OUTPUTDIR +"/" + x).st_mtime)
+		newest=getNumberFromString(newest)
+	else:
+		print "directory is empty"
+	
+	print "newest:",newest
+	return newest
+
 
 ####################################
 ######### main program
@@ -258,9 +276,9 @@ def distanceTest(d_List):
 #Check if folder exists, if not then it will be created.
 path = "." + os.sep + OUTPUTDIR
 if not os.path.exists(path):
-	print "dir doesn't exists"
+	print "directory \""+ OUTPUTDIR +"\" doesn't exists"
 	os.mkdir(path)
-	print "output directory \" "+ OUTPUTDIR +" \"created."
+	print "output directory \""+ OUTPUTDIR +"\" created."
 else:
     print "dir exists"
 
@@ -291,21 +309,11 @@ Y_belowLimit=IMAGE_SIZE_Y*(1-INNER_AREA_PERCENT_Y)/2
 print "Y_belowLimit:",Y_belowLimit
 
 
+newest=getNewestImageNumber()
+currentImgNumber=1
 
-#search for newest file in ./output dir
-## 2do: parse the image number and start counting after
-filelist = os.listdir("./output/")
-if filelist:  		#way to test if "filelist"/dir is not empty
-	print filelist
-	filelist = filter(lambda x: not os.path.isdir("./output/" + x), filelist)
-	newest = max(filelist, key=lambda x: os.stat("./output/" + x).st_mtime)
-	print "newest:",newest
-else:
-	print "dir is empty"
-
-
-for currentImg in range(1,NUMBER_IMAGES+1):	
-
+#for currentImgNumber in range(1,NUMBER_IMAGES+1):
+while(currentImgNumber<NUMBER_IMAGES+1):
 	testSuccess1=False
 	testSuccess2=False
 	attempts=0
@@ -347,4 +355,5 @@ for currentImg in range(1,NUMBER_IMAGES+1):
 			#print "testSuccess1:",testSuccess1
 			#print "testSuccess2:",testSuccess2
 			if testSuccess1 and testSuccess2:
-				modifySVGAndSave(newPathD,SVGobj)
+				modifySVGAndSave(newPathD,SVGobj,currentImgNumber)
+				currentImgNumber+=1
