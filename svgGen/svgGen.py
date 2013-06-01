@@ -31,6 +31,8 @@
 	2do:
 	#copy XML matrix and work with it
 	#move numberOfSubstitution test higher
+	#number of maximal iterations as percent of number of images to create (like 150?)
+	#class variables .self
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
@@ -53,7 +55,7 @@ import os 			#system function like create folder
 SVG_INPUT_FILENAME="plainSVG5.svg"
 OUTPUTDIR = "output"
 NUMBER_IMAGES=5
-SUBSTITUTION_PERCENT=.5				#specifies how many Coord be replaced
+SUBSTITUTION_PERCENT=.3				#specifies how many Coord be replaced
 maximalLoopIterations=1000 			#The number of attempts to find a suitable picture
 
 #DIN A4:(744,1052)
@@ -113,7 +115,7 @@ def getNumberOfCoords(d_List):
 	return numCoords
 
 
-def getRandomIndex(numCoords):
+def getRandomIndex(numCoords,indexList):
 	# obtain the random index to be replaced 
 	while True:
 		randIndex=random.randint(0,numCoords)
@@ -260,8 +262,8 @@ def getNewestImageNumber():
 	filelist = os.listdir("./"+ OUTPUTDIR +"/")
 	if filelist:  		#way to test if "filelist"/dir is not empty
 		print filelist
-		filelist = filter(lambda x: not os.path.isdir("./"+ OUTPUTDIR +"/" + x), filelist)
-		newest = max(filelist, key=lambda x: os.stat("./"+ OUTPUTDIR +"/" + x).st_mtime)
+		filelist2 = filter(lambda x: not os.path.isdir("./"+ OUTPUTDIR +"/" + x), filelist)
+		newest = max(filelist2, key=lambda x: os.stat("./"+ OUTPUTDIR +"/" + x).st_mtime)
 		newest=getNumberFromString(newest)
 	else:
 		print "directory is empty"
@@ -312,49 +314,51 @@ print "Y_belowLimit:",Y_belowLimit
 
 newest=getNewestImageNumber()
 currentImgNumber=1
+attempts=0
 
 #for currentImgNumber in range(1,NUMBER_IMAGES+1):
-while(currentImgNumber<NUMBER_IMAGES+1):
+while attempts < maximalLoopIterations*NUMBER_IMAGES and (currentImgNumber<NUMBER_IMAGES+1):
+	attempts+=1
+	#print attempts
 	testSuccess1=False
 	testSuccess2=False
-	attempts=0
-	while attempts < maximalLoopIterations and ( not testSuccess1 or not testSuccess2 ):
-		#print "\n :::::::: new try.... :::::::: \n"
-		attempts+=1
-		indexList = []
-		SVGobj=loadSVGandGetXML(SVG_INPUT_FILENAME)
-		#print "SVGobj:",SVGobj
 
-		d_List=getPathD_asList(SVGobj)
-		#print "d_List:",d_List
+#while not testSuccess1 or not testSuccess2:
+	#print "\n :::::::: new try.... :::::::: \n"
+	indexList = []
+	SVGobj=loadSVGandGetXML(SVG_INPUT_FILENAME)
+	#print "SVGobj:",SVGobj
 
-		numCoords=getNumberOfCoords(d_List)
-		#print "numCoords:",numCoords
+	d_List=getPathD_asList(SVGobj)
+	#print "d_List:",d_List
 
-		numSubstitutions=int(numCoords*SUBSTITUTION_PERCENT)
-		#print "numSubstitutions:",numSubstitutions
-		if numSubstitutions == 0:
-			print "The number of points to be replaced is too small, please change the \"numSubstitutions\" parameter."
-		else:
-			for coordNum in range(0,numSubstitutions):
-				
-				randIndex=getRandomIndex(numCoords)
-				#print "randIndex",coordNum,": ",randIndex
-				
-				randCoords=getRandomCoords()
-				#print "randCoords",coordNum,":" ,randCoords,"\n"
+	numCoords=getNumberOfCoords(d_List)
+	#print "numCoords:",numCoords
 
-				#print_d_List(d_List)
-				d_List = substituteCoordsAndGet_d_List(d_List,randIndex,randCoords)
-				#print_d_List(d_List)
+	numSubstitutions=int(numCoords*SUBSTITUTION_PERCENT)
+	#print "numSubstitutions:",numSubstitutions
+	if numSubstitutions == 0:
+		print "The number of points to be replaced is too small, please change the \"numSubstitutions\" parameter."
+	else:
+		for coordNum in range(0,numSubstitutions):
+			
+			randIndex=getRandomIndex(numCoords,indexList)
+			#print "randIndex",coordNum,": ",randIndex
+			
+			randCoords=getRandomCoords()
+			#print "randCoords",coordNum,":" ,randCoords,"\n"
 
-				newPathD = transform_d_List_toPathD_AndGet(d_List)
-				#print newPathD
+			#print_d_List(d_List)
+			d_List = substituteCoordsAndGet_d_List(d_List,randIndex,randCoords)
+			#print_d_List(d_List)
 
-			testSuccess1=areaTest(d_List)
-			testSuccess2=distanceTest(d_List)
-			#print "testSuccess1:",testSuccess1
-			#print "testSuccess2:",testSuccess2
-			if testSuccess1 and testSuccess2:
-				modifySVGAndSave(newPathD,SVGobj,currentImgNumber)
-				currentImgNumber+=1
+			newPathD = transform_d_List_toPathD_AndGet(d_List)
+			#print newPathD
+
+		testSuccess1=areaTest(d_List)
+		testSuccess2=distanceTest(d_List)
+		#print "testSuccess1:",testSuccess1
+		#print "testSuccess2:",testSuccess2
+		if testSuccess1 and testSuccess2:
+			modifySVGAndSave(newPathD,SVGobj,currentImgNumber)
+			currentImgNumber+=1
