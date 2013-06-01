@@ -29,6 +29,8 @@
 
 """
 	2do:
+	#copy XML matrix and work with it
+	#move numberOfSubstitution test higher
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
@@ -52,7 +54,6 @@ SVG_INPUT_FILENAME="plainSVG5.svg"
 OUTPUTDIR = "output"
 NUMBER_IMAGES=5
 SUBSTITUTION_PERCENT=.5				#specifies how many Coord be replaced
-
 maximalLoopIterations=1000 			#The number of attempts to find a suitable picture
 
 #DIN A4:(744,1052)
