@@ -164,7 +164,7 @@ def transform_d_List_toPathD_AndGet(d_List):
 	return newPathD
 
 
-def modifySVGAndSave(newPathD,SVGobj,currentImgNumber):
+def modifySVGAndSave(newPathD,SVGobj,path,currentImgNumber):
 	now = datetime.datetime.now()
 	try:
 		SVGobj[2,0,u'd']=newPathD
@@ -172,7 +172,7 @@ def modifySVGAndSave(newPathD,SVGobj,currentImgNumber):
 		SVGobj[2,u'd']=newPathD
 
 	outputFileName=str(newest+currentImgNumber)+".svg"
-	outputString="./"+ OUTPUTDIR +"/"+outputFileName
+	outputString=path+outputFileName
 	print outputFileName,"\n========================\n"
 	SVGobj.save(outputString)
 
@@ -356,5 +356,5 @@ while attempts < maximalLoopIterations*NUMBER_IMAGES and (currentImgNumber<NUMBE
 		#print "testSuccess1:",testSuccess1
 		#print "testSuccess2:",testSuccess2
 		if testSuccess1 and testSuccess2:
-			modifySVGAndSave(newPathD,SVGobj,currentImgNumber)
+			modifySVGAndSave(newPathD,SVGobj,path,currentImgNumber)
 			currentImgNumber+=1
