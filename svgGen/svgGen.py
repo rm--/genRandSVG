@@ -29,9 +29,6 @@
 
 """
 	2do:
-	#copy XML matrix and work with it
-	#move numberOfSubstitution test higher
-	#number of maximal iterations as percent of number of images to create (like 150?)
 	#class variables .self
 	#trying DOM or another XML parse technology
 	#add better description
@@ -257,17 +254,16 @@ def getNumberFromString(x):
     return int(''.join(ele for ele in x if ele.isdigit()))
 
 
-def getNewestImageNumber():
+def getNewestImageNumber(path):
 	newest=0
-	filelist = os.listdir("./"+ OUTPUTDIR +"/")
-	if filelist:  		#way to test if "filelist"/dir is not empty
-		print filelist
-		filelist2 = filter(lambda x: not os.path.isdir("./"+ OUTPUTDIR +"/" + x), filelist)
-		newest = max(filelist2, key=lambda x: os.stat("./"+ OUTPUTDIR +"/" + x).st_mtime)
-		newest=getNumberFromString(newest)
-	else:
-		print "directory is empty"
-	
+	filelist = []  					#a list with tupels (last modification time, filename)
+	for x in os.listdir(path):
+		filelist.append((os.path.getmtime(path + x),x))
+
+	print filelist
+	filelist.sort()
+	lastModifedFilename = filelist[-1][1]   		#get last element of list (element with newest time)
+	newest=getNumberFromString(lastModifedFilename)
 	print "newest:",newest
 	return newest
 
@@ -277,7 +273,7 @@ def getNewestImageNumber():
 ####################################
 
 #Check if folder exists, if not then it will be created.
-path = "." + os.sep + OUTPUTDIR
+path = "." + os.sep + OUTPUTDIR + os.sep
 if not os.path.exists(path):
 	print "directory \""+ OUTPUTDIR +"\" doesn't exists"
 	os.mkdir(path)
@@ -312,7 +308,7 @@ Y_belowLimit=IMAGE_SIZE_Y*(1-INNER_AREA_PERCENT_Y)/2
 print "Y_belowLimit:",Y_belowLimit
 
 
-newest=getNewestImageNumber()
+newest=getNewestImageNumber(path)
 currentImgNumber=1
 attempts=0
 
