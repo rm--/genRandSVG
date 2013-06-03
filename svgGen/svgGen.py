@@ -4,7 +4,7 @@
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 2.6.2013
+#last change: 3.6.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
@@ -251,7 +251,7 @@ def distanceTest(d_List):
 
 
 def getNumberFromString(x):
-    return int(''.join(ele for ele in x if ele.isdigit()))
+    return int(''.join(ele for el in x if el.isdigit()))
 
 
 def getNewestImageNumber(path):
