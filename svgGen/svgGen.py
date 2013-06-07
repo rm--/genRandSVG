@@ -260,13 +260,15 @@ def getNewestImageNumber(path):
 	for x in os.listdir(path):
 		filelist.append((os.path.getmtime(path + x),x))
 
-	print filelist
-	filelist.sort()
-	lastModifedFilename = filelist[-1][1]   		#get last element of list (element with newest time)
-	newest=getNumberFromString(lastModifedFilename)
+	if filelist:
+		print filelist
+		filelist.sort()
+		lastModifedFilename = filelist[-1][1]   		#get last element of list (element with newest time)
+		newest=getNumberFromString(lastModifedFilename)
+
 	print "newest:",newest
 	return newest
-
+	
 
 ####################################
 ######### main program
