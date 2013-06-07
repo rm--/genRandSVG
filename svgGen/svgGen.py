@@ -251,7 +251,7 @@ def distanceTest(d_List):
 
 
 def getNumberFromString(x):
-    return int(''.join(ele for el in x if el.isdigit()))
+    return int(''.join(el for el in x if el.isdigit()))
 
 
 def getNewestImageNumber(path):
