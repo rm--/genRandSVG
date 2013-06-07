@@ -38,11 +38,11 @@
 
 import svgfig  		#parse SVG
 import random 		#random numbers gen
-import ast 			#convert unicode in int/float
+import ast 		#convert unicode in int/float
 import datetime 	#current date/time
 import math 		#sqrt(), pow()
-import sys 			#exit function
-import os 			#system function like create folder
+import sys 		#exit function
+import os 		#system function like create folder
 
 ####################################
 ######### parameter
@@ -53,7 +53,7 @@ SVG_INPUT_FILENAME="plainSVG5.svg"
 OUTPUTDIR = "output"
 NUMBER_IMAGES=5
 SUBSTITUTION_PERCENT=.3				#specifies how many Coord be replaced
-maximalLoopIterations=1000 			#The number of attempts to find a suitable picture
+MAXIMALLOOPITERATIONS=1000 			#The number of attempts to find a suitable picture
 
 #DIN A4:(744,1052)
 IMAGE_SIZE_X=744
@@ -315,7 +315,7 @@ currentImgNumber=1
 attempts=0
 
 #for currentImgNumber in range(1,NUMBER_IMAGES+1):
-while attempts < maximalLoopIterations*NUMBER_IMAGES and (currentImgNumber<NUMBER_IMAGES+1):
+while attempts < MAXIMALLOOPITERATIONS*NUMBER_IMAGES and (currentImgNumber<NUMBER_IMAGES+1):
 	attempts+=1
 	#print attempts
 	testSuccess1=False
