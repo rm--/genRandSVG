@@ -4,7 +4,7 @@
 #=========================================================
 #author: René Muhl
 #from: Leipzig, Germany
-#last change: 3.6.2013
+#last change: 16.7.2013
 #email: ReneM{dot}github{at}gmail{dot}com
 #=========================================================
 
@@ -28,12 +28,14 @@
 """
 
 """
-	2do:
+	(just for me) 2do:
+	----------------------
 	#class variables .self
 	#trying DOM or another XML parse technology
 	#add better description
 	#add better image that explains the program
 	#pack with pip (freeze)?
+	#better data structure - perhabs a matrix(with figure elements in rows)
 """
 
 import svgfig  		#parse SVG
@@ -251,7 +253,7 @@ def distanceTest(d_List):
 
 
 def getNumberFromString(x):
-    return int(''.join(ele for el in x if el.isdigit()))
+    return int(''.join(el for el in x if el.isdigit()))
 
 
 def getNewestImageNumber(path):
