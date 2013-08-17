@@ -20,5 +20,5 @@ Then they make the program executable, adjust the parameters in the header of th
 
 **preview:**
 
-![ScreenShot](https://raw.github.com/ReneMuhl/python2/master/svgGen/function.png)
+![ScreenShot](https://raw.github.com/ReneMuhl/svgGen/master/function.png)
 
