@@ -1,7 +1,12 @@
 #svgGen 
 [A simple program that generates several different SVG files from a source image.]
   
-  
+
+needs to be refactored!!!
+=======================
+
+
+
 ###description:
 xxxx
 
