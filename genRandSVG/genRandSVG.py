@@ -33,7 +33,8 @@ def main():
         s = SVG(i, width, height)
         s.addElement(getRandLine(width, height))
         s.addElement(['V', 100.7])
-        s.addElement(['L', 1024, 0])
+        s.addElement(getRandLine(width, height))
+        s.addElement(getRandCubicBezier(width, height))
         s.addElement(getRandCubicBezier(width, height))
         s.saveToFile()
 
