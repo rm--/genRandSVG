@@ -3,64 +3,107 @@ Created on Mar 4, 2014
 
 @author: renemuhl
 '''
+# used lib: https://pypi.python.org/pypi/svgwrite/
+# install with: sudo pip install svgwrite
+# usage: python genRandSVG.py -n 5 -s 1024 768
 
-#create random figures, least 4?
-#output them as SVG-File
-#https://pypi.python.org/pypi/svgwrite/
-#sudo pip install svgwrite
 
+#2do
+######
+# create random figures, least 4?
+# output them as SVG-File
+# class with parameter picture size
+# getter for length and width
+# save single elements like cubicBezier, line etc..
+
+import argparse
 import random
 import svgwrite
 from svgwrite.path import Path
-from numpy import absolute
 
-def printNumber(x):
-    print(random.randint(0,x))
-    
 
-def test():
-    dwg = svgwrite.Drawing('test.svg', profile='tiny')
-    dwg.add(dwg.line((0, 0), (500, 500), stroke=svgwrite.rgb(255, 255, 200, '%')))
-    dwg.add(dwg.ellipse(center=(50,50), r=(100,100)))
-    dwg.add(dwg.text('Test', insert=(0, 50), fill='yellow'))
-    dwg.save()
-    
-    
-def tryPath():
-    #uppercase letter: absolute coords
-    p = Path(d=('M', 0, 0))
-    print(p.tostring())
-    p.push('L', 100, 100)
-    p.push('V', 100.7, 200.1)
-    p.push('L', 1024, 0)
-    p.push('C', 55, 214, 541 ,10 ,50, 50)
-    print(p.tostring())
-    dwg = svgwrite.Drawing('test.svg', profile='tiny', size=(1024,768))
-    dwg.add(p)
-    print(dwg.tostring())
-    dwg.save()
-    
-    
+def main():
+    args = parse_arguments()
+    countImages = args.n
+    width = args.s[0]
+    height = args.s[1]
 
-    
+    for i in range(countImages):
+        print(i)
+        s = SVG(i, width, height)
+        s.addElement(getRandLine(width, height))
+        s.addElement(['V', 100.7])
+        s.addElement(['L', 1024, 0])
+        s.addElement(getRandCubicBezier(width, height))
+        s.saveToFile()
 
-def addCubicBezier(p, x1, y1, x2, y2, x, y):
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-n", nargs='?', type=int, required=True,
+                        help='Integer specifies the number of images.')
+    parser.add_argument("-s", nargs=2, type=int, required=True,
+        help='Integer specifies the width and height of the images.')
+    args = parser.parse_args()
+    #print("args: ", args)
+    return args
+
+
+def getRandLine(width, height):
     '''
-    cubic-bezier-curve ‘c’, ‘C’ (x1 y1 x2 y2 x y)+
-    Draws a cubic Bézier curve from the current point to (x,y) using (x1,y1)
+    line 'l', 'L' (x y)+
+    Draw a line from the current point to the given(x, y) coordinate.
+    '''
+    line = ['L']
+    line.append(random.randint(0, width))
+    line.append(random.randint(0, height))
+    print(line)
+    return line
+
+
+def getRandCubicBezier(width, height):
+    '''
+    cubic-bezier-curve 'c', 'C' (x1 y1 x2 y2 x y)+
+    Draws a cubic Bezier curve from the current point to (x,y) using (x1,y1)
     as the control point at the beginning of the curve and (x2,y2) as the
     control point at the end of the curve.
-    
+
     parameters:
     Path p: path object
-    [int x, int y] endPoint: end point 
-    controlPoint1: 
+    [int x, int y] endPoint: end point
+    controlPoint1:
     controlPoint2:
-    '''    
-    print(p.toString())
-    p.push('C', x1, y1, x2, y2, x, y)
-    
-    
+    '''
+    bezier = ['C']
+    for i in range(6):
+        bezier.append(random.randint(0, width))
+        bezier.append(random.randint(0, height))
+    print(bezier)
+    return bezier
+
+
+class SVG:
+
+    ''' SVG '''
+
+    def __init__(self, id, width, height):
+        self.id = id
+        self.width = width
+        self.height = height
+        self.path = Path(d=('M', 0, 0))
+        self.elements = []
+
+    def addElement(self, newELement):
+        self.elements.append(newELement)
+        self.path.push(newELement)
+
+    def saveToFile(self):
+        dwg = svgwrite.Drawing(str(self.id) + '.svg',
+                               profile='tiny', size=(self.width, self.height))
+        dwg.add(self.path)
+        #print(dwg.tostring())
+        dwg.save()
+
 
 if __name__ == '__main__':
-    tryPath()
+    main()
