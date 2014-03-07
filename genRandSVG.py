@@ -10,6 +10,7 @@
 ===============
 = REQUIREMENTS:
 = used library: https://pypi.python.org/pypi/svgwrite/
+= documentation: http://pythonhosted.org//svgwrite/index.html
 = install with: sudo pip install svgwrite
 ===============
 
