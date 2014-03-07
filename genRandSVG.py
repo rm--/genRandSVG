@@ -157,6 +157,7 @@ def getRandSmoothCubicBezier(width, height):
     print(bezier)
     return bezier
 
+
 def getRandQuadraticBezier(width, height):
     '''
     quadratic-bezier-curve 'q', 'Q' (x1 y1 x y)+
