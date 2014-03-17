@@ -4,7 +4,7 @@
 ==========================================================
 = author: René Muhl
 = from: Leipzig, Germany
-= last change: 7.4.2014
+= last change: 17.4.2014
 = email: ReneM{dot}github{at}gmail{dot}com
 ==========================================================
 ===============
@@ -14,7 +14,7 @@
 = install with: sudo pip install svgwrite
 ===============
 
-=> usage: python genRandSVG.py -n 5 -s 1024 768
+=> usage: python genRandSVG.py -n 5 -s 1280 1024
 '''
 
 #2do
@@ -27,6 +27,7 @@
 # parameter of methods should get the correct range
 # cross in the middle test?
 # elements in extra module?
+# new command line args distance and attempts -> access?
 # unittests
 
 
@@ -34,14 +35,19 @@ import argparse
 import random
 import svgwrite
 from svgwrite.path import Path
+import os
+import sys
 #import unittest
+
+DISTANCE_BETWEEN_POINTS = 300
+MAX_ATTEMPTS_TO_GET_NEW_POINT = 30
 
 
 def main():
     args = parse_arguments()
-    countImages = args.n
-    width = args.s[0]
-    height = args.s[1]
+    numberImages = args.n
+    WIDTH = args.s[0]
+    HEIGHT = args.s[1]
     '''
     numberElementsInSVG < 4 => simple SVG
     numberElementsInSVG < 10 => moderate SVG
@@ -49,28 +55,35 @@ def main():
     '''
     numberElementsInSVG = 3
 
-    for i in xrange(countImages):
-        print(i)
-        s = SVG(i, width, height)
-        s.addElement(getRandLine(width, height))
+    ENOUGH_SPACE_IN_X = WIDTH / DISTANCE_BETWEEN_POINTS < numberElementsInSVG
+    ENOUGH_SPACE_IN_Y = HEIGHT / DISTANCE_BETWEEN_POINTS < numberElementsInSVG
+    if(ENOUGH_SPACE_IN_X or ENOUGH_SPACE_IN_Y):
+        print("DISTANCE_BETWEEN_POINTS too big for this numberElementsInSVG!"
+                                                            " Will now stop.")
+        sys.exit(-1)
+
+    for i in xrange(numberImages):
+        print("SVG #" + str(i))
+        s = SVG(i, WIDTH, HEIGHT)
+        s.addElement(getRandLine(WIDTH/numberElementsInSVG,
+                                 HEIGHT/numberElementsInSVG))
+        lastPoints = []
         for _ in xrange(numberElementsInSVG):
-            # next element is a line or a cubic bezier
-            selection = random.randint(0, 6)
-            print("s " + str(selection))
+            print("previous elements: " + str(s.getElements()))
+            lastPoints = s.getPreviousPoints()
+            # roll the dice to get next element (line or bezier curve)
+            selection = random.randint(0, 4)
+            #print("elment " + str(selection))
             if(selection == 0):
-                s.addElement(getRandLine(width, height))
+                s.addElement(getRandLine(WIDTH, HEIGHT, lastPoints))
             elif(selection == 1):
-                s.addElement(getRandHorizontalLine(width))
+                s.addElement(getRandCubicBezier(WIDTH, HEIGHT, lastPoints))
             elif(selection == 2):
-                s.addElement(getRandHorizontalLine(height))
+                s.addElement(getRandSmoothCubicBezier(WIDTH, HEIGHT, lastPoints))
             elif(selection == 3):
-                s.addElement(getRandCubicBezier(width, height))
-            elif(selection == 4):
-                s.addElement(getRandSmoothCubicBezier(width, height))
-            elif(selection == 5):
-                s.addElement(getRandQuadraticBezier(width, height))
+                s.addElement(getRandQuadraticBezier(WIDTH, HEIGHT, lastPoints))
             else:
-                s.addElement(getRandSmoothQuadraticBezier(width, height))
+                s.addElement(getRandSmoothQuadraticBezier(WIDTH, HEIGHT, lastPoints))
         s.saveToFile()
 
 
@@ -79,47 +92,63 @@ def parse_arguments():
     parser.add_argument("-n", nargs='?', type=int, required=True,
                         help='Integer specifies the number of images.')
     parser.add_argument("-s", nargs=2, type=int, required=True,
-        help='Integer specifies the width and height of the images.')
+        help='Integer specifies the WIDTH and HEIGHT of the images.')
     args = parser.parse_args()
     #print("args: ", args)
     return args
 
 
-def getRandLine(width, height):
+def checkNewPoint(lastPoints, newX, newY):
+    flag = True
+    print("new point: (" + str(newX) + ", " + str(newY) + ")")
+    for i in xrange(len(lastPoints)):
+        inRangeOfX = (newX < lastPoints[i][0] + DISTANCE_BETWEEN_POINTS
+                    and lastPoints[i][0] - DISTANCE_BETWEEN_POINTS < newX)
+        inRangeOfY = (newY < lastPoints[i][1] + DISTANCE_BETWEEN_POINTS
+                    and lastPoints[i][1] - DISTANCE_BETWEEN_POINTS < newY)
+
+        if(inRangeOfX and inRangeOfY):
+            flag = False
+            break
+    return flag
+
+
+def getNewValidPoint(WIDTH, HEIGHT, lastPoints=[]):
+    newX = random.randint(0, WIDTH)
+    newY = random.randint(0, HEIGHT)
+
+    okay = False
+    attempt = 0
+    while(attempt < MAX_ATTEMPTS_TO_GET_NEW_POINT and not okay):
+        okay = checkNewPoint(lastPoints, newX, newY)
+        #print(okay)
+        if(okay):
+            break
+        else:
+            attempt = attempt + 1
+        newX = random.randint(0, WIDTH)
+        newY = random.randint(0, HEIGHT)
+    newPoint = []
+    if(okay):
+        newPoint.append(newX)
+        newPoint.append(newY)
+    return newPoint
+
+
+def getRandLine(WIDTH, HEIGHT, lastPoints=[]):
     '''
     line 'l', 'L' (x y)+
     Draw a line from the current point to the given(x, y) coordinate.
     '''
     line = ['L']
-    line.append(random.randint(0, width))
-    line.append(random.randint(0, height))
+    newPoint = getNewValidPoint(WIDTH, HEIGHT, lastPoints)
+    line.append(newPoint[0])
+    line.append(newPoint[1])
     print(line)
     return line
 
 
-def getRandHorizontalLine(width):
-    '''
-    horizontal-line 'h', 'H' x+
-    Draws a horizontal line from the current point (cpx, cpy) to (x, cpy).
-    '''
-    line = ['H']
-    line.append(random.randint(0, width))
-    print(line)
-    return line
-
-
-def getRandVerticalLine(height):
-    '''
-    vertical-line 'v', 'V' y+
-    Draws a vertical line from the current point (cpx, cpy) to (cpx, y).
-    '''
-    line = ['V']
-    line.append(random.randint(0, height))
-    print(line)
-    return line
-
-
-def getRandCubicBezier(width, height):
+def getRandCubicBezier(WIDTH, HEIGHT, lastPoints):
     '''
     cubic-bezier-curve 'c', 'C' (x1 y1 x2 y2 x y)+
     Draws a cubic Bezier curve from the current point to (x,y) using (x1,y1)
@@ -134,13 +163,14 @@ def getRandCubicBezier(width, height):
     '''
     bezier = ['C']
     for _ in xrange(3):
-        bezier.append(random.randint(0, width))
-        bezier.append(random.randint(0, height))
+        newPoint = getNewValidPoint(WIDTH, HEIGHT, lastPoints)
+        bezier.append(newPoint[0])
+        bezier.append(newPoint[1])
     print(bezier)
     return bezier
 
 
-def getRandSmoothCubicBezier(width, height):
+def getRandSmoothCubicBezier(WIDTH, HEIGHT, lastPoints):
     '''
     smooth-cubic-bezier-curve 's', 'S' (x2 y2 x y)+
     Draws a cubic Bezier curve from the current point to (x,y). The first
@@ -153,13 +183,14 @@ def getRandSmoothCubicBezier(width, height):
     '''
     bezier = ['S']
     for _ in xrange(2):
-        bezier.append(random.randint(0, width))
-        bezier.append(random.randint(0, height))
+        newPoint = getNewValidPoint(WIDTH, HEIGHT, lastPoints)
+        bezier.append(newPoint[0])
+        bezier.append(newPoint[1])
     print(bezier)
     return bezier
 
 
-def getRandQuadraticBezier(width, height):
+def getRandQuadraticBezier(WIDTH, HEIGHT, lastPoints):
     '''
     quadratic-bezier-curve 'q', 'Q' (x1 y1 x y)+
     Draws a quadratic Bezier curve from the current point to (x,y) using
@@ -167,13 +198,14 @@ def getRandQuadraticBezier(width, height):
     '''
     bezier = ['Q']
     for _ in xrange(2):
-        bezier.append(random.randint(0, width))
-        bezier.append(random.randint(0, height))
+        newPoint = getNewValidPoint(WIDTH, HEIGHT, lastPoints)
+        bezier.append(newPoint[0])
+        bezier.append(newPoint[1])
     print(bezier)
     return bezier
 
 
-def getRandSmoothQuadraticBezier(width, height):
+def getRandSmoothQuadraticBezier(WIDTH, HEIGHT, lastPoints):
     '''
     smooth-quadratic-bezier-curve 't', 'T (x y)+
     Draws a quadratic Bezier curve from the current point to (x,y).
@@ -184,8 +216,9 @@ def getRandSmoothQuadraticBezier(width, height):
     point.)
     '''
     bezier = ['T']
-    bezier.append(random.randint(0, width))
-    bezier.append(random.randint(0, height))
+    newPoint = getNewValidPoint(WIDTH, HEIGHT, lastPoints)
+    bezier.append(newPoint[0])
+    bezier.append(newPoint[1])
     print(bezier)
     return bezier
 
@@ -194,10 +227,10 @@ class SVG:
 
     ''' SVG '''
 
-    def __init__(self, id, width, height):
+    def __init__(self, id, WIDTH, HEIGHT):
         self.id = id
-        self.width = width
-        self.height = height
+        self.WIDTH = WIDTH
+        self.HEIGHT = HEIGHT
         self.path = Path(d=('M', 0, 0))
         self.elements = []
 
@@ -205,9 +238,38 @@ class SVG:
         self.elements.append(newELement)
         self.path.push(newELement)
 
+    def getElements(self):
+        return self.elements
+
+    def getPointOfLastElement(self):
+        point = []
+        #print(self.elements[-1])
+        point.append(self.elements[-1][-2])
+        point.append(self.elements[-1][-1])
+        return point
+
+    def getPreviousPoints(self):
+        points = []
+        for i in xrange(len(self.elements)):
+            points.append([self.elements[i][-2], self.elements[i][-1]])
+        print("previous points: " + str(points))
+        return points
+
     def saveToFile(self):
-        dwg = svgwrite.Drawing(str(self.id) + '.svg',
-                               profile='tiny', size=(self.width, self.height))
+        OUTPUT_DIR = "output"
+        #Check if folder exists, if not then it will be created.
+        path = "." + os.sep + OUTPUT_DIR + os.sep
+        try:
+            os.makedirs(path)
+        except OSError:
+            if os.path.exists(path):
+                # We are nearly safe
+                pass
+            else:
+                # There was an error on creation, so make sure we know about it
+                raise
+        dwg = svgwrite.Drawing(path + str(self.id) + '.svg',
+                               profile='tiny', size=(self.WIDTH, self.HEIGHT))
         dwg.add(self.path)
         #print(dwg.tostring())
         dwg.save()
