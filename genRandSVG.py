@@ -29,7 +29,9 @@
 # elements in extra module?
 # new command line args distance and attempts -> access?
 # unittests
-
+#
+# one generator obj that knows the command line args, create a new svg, that
+## knows the previous elements
 
 import argparse
 import random
@@ -39,7 +41,7 @@ import os
 import sys
 #import unittest
 
-DISTANCE_BETWEEN_POINTS = 300
+DISTANCE_BETWEEN_POINTS = 200
 MAX_ATTEMPTS_TO_GET_NEW_POINT = 30
 
 
@@ -53,13 +55,14 @@ def main():
     numberElementsInSVG < 10 => moderate SVG
     numberElementsInSVG >= 10 => complex SVG
     '''
-    numberElementsInSVG = 3
+    numberElementsInSVG = 4
 
     ENOUGH_SPACE_IN_X = WIDTH / DISTANCE_BETWEEN_POINTS < numberElementsInSVG
     ENOUGH_SPACE_IN_Y = HEIGHT / DISTANCE_BETWEEN_POINTS < numberElementsInSVG
     if(ENOUGH_SPACE_IN_X or ENOUGH_SPACE_IN_Y):
-        print("DISTANCE_BETWEEN_POINTS too big for this numberElementsInSVG!"
-                                                            " Will now stop.")
+        print("Distance between points too big for this amount of elements"
+            "and resolution!\nPlease decrease distance or count of elements. "
+                    "Another option is to increase the resolution.\nWill now stop.")
         sys.exit(-1)
 
     for i in xrange(numberImages):
@@ -72,18 +75,12 @@ def main():
             print("previous elements: " + str(s.getElements()))
             lastPoints = s.getPreviousPoints()
             # roll the dice to get next element (line or bezier curve)
-            selection = random.randint(0, 4)
+            selection = random.randint(0, 2)
             #print("elment " + str(selection))
             if(selection == 0):
                 s.addElement(getRandLine(WIDTH, HEIGHT, lastPoints))
-            elif(selection == 1):
-                s.addElement(getRandCubicBezier(WIDTH, HEIGHT, lastPoints))
-            elif(selection == 2):
-                s.addElement(getRandSmoothCubicBezier(WIDTH, HEIGHT, lastPoints))
-            elif(selection == 3):
-                s.addElement(getRandQuadraticBezier(WIDTH, HEIGHT, lastPoints))
             else:
-                s.addElement(getRandSmoothQuadraticBezier(WIDTH, HEIGHT, lastPoints))
+                s.addElement(getRandBezier(WIDTH, HEIGHT, lastPoints))
         s.saveToFile()
 
 
@@ -146,6 +143,25 @@ def getRandLine(WIDTH, HEIGHT, lastPoints=[]):
     line.append(newPoint[1])
     print(line)
     return line
+
+
+def getRandBezier(WIDTH, HEIGHT, lastPoints):
+    '''
+    Returns a quadratic or smooth quadratic, cubic, smooth cubic
+    bezier curve.
+    Depending on the kind of curve different amount of points must be created.
+    '''
+    selection = random.randint(0, 3)
+    bezier = []
+    if(selection == 0):
+        bezier = getRandQuadraticBezier(WIDTH, HEIGHT, lastPoints)
+    elif(selection == 1):
+        bezier = getRandSmoothQuadraticBezier(WIDTH, HEIGHT, lastPoints)
+    elif(selection == 2):
+        bezier = getRandCubicBezier(WIDTH, HEIGHT, lastPoints)
+    else:
+        bezier = getRandSmoothCubicBezier(WIDTH, HEIGHT, lastPoints)
+    return bezier
 
 
 def getRandCubicBezier(WIDTH, HEIGHT, lastPoints):
