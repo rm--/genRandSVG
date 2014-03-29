@@ -27,8 +27,10 @@ or
 # think about contraints to get a distance between points
 # develop a general formula for points in a fixed range like the 4 quadrants
 # cross in the middle test?
-# what happens when more attempts as max attempts - need sophisticated solution?!
-# unittests
+# what happens when more attempts as max attempts - need sophisticated solution?! :D
+# documentation
+# different examples with args and results
+# unittests/pytest! - in extra package?
 
 
 import argparse
