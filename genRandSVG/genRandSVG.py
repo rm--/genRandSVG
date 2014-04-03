@@ -22,7 +22,7 @@ or
 
 #2do
 ######
-# install pip in req. ?
+#    for errors, comments and suggestions Mail@ReneM{dot}github{at}gmail{dot}com in README
 # need single Elements of one SVG in a list?
 # think about contraints to get a distance between points
 # develop a general formula for points in a fixed range like the 4 quadrants
@@ -36,7 +36,6 @@ or
 import argparse
 import sys
 import gen
-#import unittest
 
 
 def main():
