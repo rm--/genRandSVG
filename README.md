@@ -11,8 +11,7 @@ python script to generate randomized SVG images.
 ## why?
 
 Randomized images are useful for cognitive test. Test person have to remember images without associations.
-If you don't have a association to an image, it is more difficult to recognize the image. So the area of acitivty
-in the brain can be determined.
+If you don't have a association to an image, it is more difficult to recognize the image. So the brain acitivity of real "remembering" can be determined.
 
 ## usage
 
