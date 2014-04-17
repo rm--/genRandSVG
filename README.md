@@ -4,8 +4,13 @@ python script to generate randomized SVG images.
 
 ## installation
 
-- install python-pip on your os, e.g (Ubuntu/Arch Linux).: `sudo apt-get install python-pip` or `sudo pacamn -S python2-pip`
-- install svgwrite with pip e.g.: `sudo pip install svgwrite` or `sudo pip2.7 install svgwrite`
+- install python-pip on your os, e.g (Ubuntu/Arch Linux).:
+
+`sudo apt-get install python-pip` or `sudo pacamn -S python2-pip`
+
+- install svgwrite with pip e.g.:
+
+`sudo pip install svgwrite` or `sudo pip2.7 install svgwrite`
 
 
 ## why?
