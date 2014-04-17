@@ -5,7 +5,7 @@
 ==========================================================
 = author: René Muhl
 = from: Leipzig, Germany
-= last change: 4.4.2014
+= last change: 18.4.2014
 = email: ReneM{dot}github{at}gmail{dot}com
 ==========================================================
 ===============
@@ -22,15 +22,12 @@ or
 
 #2do
 ######
-#    for errors, comments and suggestions Mail@ReneM{dot}github{at}gmail{dot}com in README
 # need single Elements of one SVG in a list?
 # think about contraints to get a distance between points
 # develop a general formula for points in a fixed range like the 4 quadrants
 # cross in the middle test?
 # what happens when more attempts as max attempts - need sophisticated solution?! :D
-# documentation
 # different examples with args and results
-# unittests/pytest! - in extra package?
 
 
 import argparse
