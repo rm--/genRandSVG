@@ -41,8 +41,9 @@ optional arguments:
   -n [N]      Integer specifies the number of images.
   -s S S      Integer specifies the width and height of the images.
   -el [EL]    Integer specifies the number of elements that should be created.
-              el < 4 => simple SVG el < 10 => moderate SVG el >= 10 => complex
-              SVG
+              el < 4 => simple SVG
+              el < 10 => moderate SVG
+              el >= 10 => complex SVG
   -d [D]      Integer specifies the distance between the new points and all
               previous points.
   -a [A]      Integer specifies the number of attempt to get a new point with
