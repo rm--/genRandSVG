@@ -24,7 +24,7 @@ The program call generates 15 images with a size of 1280 width and 1024 height. 
 
 ### example output
 
-#######space for img
+![ScreenShot](https://raw.githubusercontent.com/ReneMuhl/genRandSVG/master/genRandSVG/meta/example_output.png)
 
 
 ## help
