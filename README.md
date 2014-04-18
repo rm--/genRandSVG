@@ -2,6 +2,11 @@
 
 python script to generate randomized SVG images.
 
+## why?
+
+Randomized images are useful for cognitive tests. Test person have to remember images without associations.
+If you don't have a association to an image, it is more difficult to recognize the image. So the brain acitivity of real "remembering" can be determined.
+
 ## installation
 
 - install python-pip on your os, e.g (Ubuntu/Arch Linux).:
@@ -12,11 +17,6 @@ python script to generate randomized SVG images.
 
 `sudo pip install svgwrite` or `sudo pip2.7 install svgwrite`
 
-
-## why?
-
-Randomized images are useful for cognitive test. Test person have to remember images without associations.
-If you don't have a association to an image, it is more difficult to recognize the image. So the brain acitivity of real "remembering" can be determined.
 
 ## usage
 
