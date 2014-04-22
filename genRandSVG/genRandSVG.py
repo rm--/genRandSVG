@@ -15,9 +15,10 @@
 = install with: sudo pip install svgwrite
 ===============
 
-=> usage: python genRandSVG.py -n 15 -s 1280 1024 -el 4 -d 100 -a 15
-or
-=> usage: python genRandSVG.py -n 15 -s 1280 1024
+=> usage (with default parameter):
+python genRandSVG.py --n 15 --s 1280 1024
+or (without default parameter):
+python genRandSVG.py --n 15 --s 1280 1024 --el 4 --d 100 --a 15
 '''
 
 #2do
@@ -52,10 +53,9 @@ def main():
         ENOUGH_SPACE_IN_X = WIDTH / DISTANCE_BW_POINTS < NUM_ELEMENTS_IN_SVG
         ENOUGH_SPACE_IN_Y = HEIGHT / DISTANCE_BW_POINTS < NUM_ELEMENTS_IN_SVG
         if(ENOUGH_SPACE_IN_X or ENOUGH_SPACE_IN_Y):
-            print("Distance between points too big for this amount of elements "
+            sys.exit("Distance between points too big for this amount of elements "
                 "and resolution!\nPlease decrease distance or count of elements. "
                         "Another option is to increase the resolution.\nWill now stop.")
-            sys.exit(-1)
     else:
         # calculate the optimal amount of elements for this width and height ?
         NUM_ELEMENTS_IN_SVG = 4
@@ -73,19 +73,19 @@ def main():
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-n", nargs='?', type=int, required=True,
+    parser.add_argument("--n", "--number", nargs='?', type=int, required=True,
                         help='Integer specifies the number of images.')
-    parser.add_argument("-s", nargs=2, type=int, required=True,
+    parser.add_argument("--s", "--size", nargs=2, type=int, required=True, metavar=('width', 'height'),
         help='Integer specifies the width and height of the images.')
-    parser.add_argument("-el", nargs='?', type=int, required=False,
+    parser.add_argument("--el", "--elements", nargs='?', type=int, required=False,
         help='Integer specifies the number of elements that should be created.\n'
-        'el < 4 => simple SVG\n'
-        'el < 10 => moderate SVG\n'
-        'el >= 10 => complex SVG\n')
-    parser.add_argument("-d", nargs='?', type=int, required=False,
+        'elements < 4 => simple SVG\n'
+        'elements < 10 => moderate SVG\n'
+        'elements >= 10 => complex SVG\n')
+    parser.add_argument("--d", "--distance", nargs='?', type=int, required=False,
         help='Integer specifies the distance between the new points and all '
         'previous points.')
-    parser.add_argument("-a", nargs='?', type=int, required=False,
+    parser.add_argument("--a", "--attempts", nargs='?', type=int, required=False,
         help='Integer specifies the number of attempt to get a new point '
         'with correct distance to all previous points.')
     args = parser.parse_args()

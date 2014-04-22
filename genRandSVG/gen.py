@@ -16,7 +16,6 @@ class generator:
         self.MATOGNP = MAX_ATTEMPTS_TO_GET_NEW_POINT
 
     def checkNewPoint(self, newX, newY):
-        flag = True
         print("new point: (" + str(newX) + ", " + str(newY) + ")")
         for i in xrange(len(self.lastPoints)):
             inRangeOfX = (newX < self.lastPoints[i][0] + self.DBP
@@ -25,9 +24,8 @@ class generator:
                         and self.lastPoints[i][1] - self.DBP < newY)
 
             if(inRangeOfX and inRangeOfY):
-                flag = False
-                break
-        return flag
+                return False
+        return True
 
     def getNewValidPoint(self):
         newX = random.randint(0, self.WIDTH)
