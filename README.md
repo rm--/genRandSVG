@@ -20,7 +20,7 @@ If you don't have a association to an image, it is more difficult to recognize t
 
 ## usage
 
-`python genRandSVG.py -n 15 -s 1280 1024 -el 4 -d 100 -a 15`
+`python genRandSVG.py --n 15 --s 1280 1024 --el 4 --d 100 --a 15`
 
 ### explanation
 
@@ -34,20 +34,28 @@ The program call generates 15 images with a size of 1280 width and 1024 height. 
 ## help
 
 ```
-usage: genRandSVG.py [-h] -n [N] -s S S [-el [EL]] [-d [D]] [-a [A]]
+usage: genRandSVG.py [-h] --n [N] --s width height [--el [EL]] [--d [D]]
+                     [--a [A]]
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -n [N]      Integer specifies the number of images.
-  -s S S      Integer specifies the width and height of the images.
-  -el [EL]    Integer specifies the number of elements that should be created.
-              el < 4 => simple SVG
-              el < 10 => moderate SVG
-              el >= 10 => complex SVG
-  -d [D]      Integer specifies the distance between the new points and all
-              previous points.
-  -a [A]      Integer specifies the number of attempt to get a new point with
-              correct distance to all previous points.
+  -h, --help            show this help message and exit
+  --n [N], --number [N]
+                        Integer specifies the number of images.
+  --s width height, --size width height
+                        Integer specifies the width and height of the images.
+  --el [EL], --elements [EL]
+                        Integer specifies the number of elements that should
+                        be created.
+                        elements < 4 => simple SVG
+                        elements < 10 => moderate SVG
+                        elements >= 10 => complex SVG
+  --d [D], --distance [D]
+                        Integer specifies the distance between the new points
+                        and all previous points.
+  --a [A], --attempts [A]
+                        Integer specifies the number of attempt to get a new
+                        point with correct distance to all previous points.
+
 ```
 
 #### errors, comments and suggestions: Mail@ReneM{dot}github{at}gmail{dot}com
