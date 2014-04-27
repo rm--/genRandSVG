@@ -36,7 +36,7 @@ class SVG:
 
     def getPreviousPoints(self):
         points = []
-        for i in xrange(len(self.elements)):
+        for i in range(len(self.elements)):
             points.append([self.elements[i][-2], self.elements[i][-1]])
         print("previous points: " + str(points))
         return points

@@ -17,7 +17,7 @@ class generator:
 
     def checkNewPoint(self, newX, newY):
         print("new point: (" + str(newX) + ", " + str(newY) + ")")
-        for i in xrange(len(self.lastPoints)):
+        for i in range(len(self.lastPoints)):
             inRangeOfX = (newX < self.lastPoints[i][0] + self.DBP
                         and self.lastPoints[i][0] - self.DBP < newX)
             inRangeOfY = (newY < self.lastPoints[i][1] + self.DBP
@@ -92,7 +92,7 @@ class generator:
         controlPoint2:
         '''
         bezier = ['C']
-        for _ in xrange(3):
+        for _ in range(3):
             newPoint = self.getNewValidPoint()
             bezier.append(newPoint[0])
             bezier.append(newPoint[1])
@@ -111,7 +111,7 @@ class generator:
         control point at the end of the curve).
         '''
         bezier = ['S']
-        for _ in xrange(2):
+        for _ in range(2):
             newPoint = self.getNewValidPoint()
             bezier.append(newPoint[0])
             bezier.append(newPoint[1])
@@ -125,7 +125,7 @@ class generator:
         (x1,y1) as the control point.
         '''
         bezier = ['Q']
-        for _ in xrange(2):
+        for _ in range(2):
             newPoint = self.getNewValidPoint()
             bezier.append(newPoint[0])
             bezier.append(newPoint[1])
@@ -152,7 +152,7 @@ class generator:
     def createNewSVG(self, i):
         s = SVG.SVG(i, self.WIDTH, self.HEIGHT)
         s.addElement(self.getRandLine())
-        for _ in xrange(self.NEIS):
+        for _ in range(self.NEIS):
             print("previous elements: " + str(s.getElements()))
             self.lastPoints = s.getPreviousPoints()
             # roll the dice to get next element (line or bezier curve)
