@@ -11,11 +11,11 @@ If you don't have a association to an image, it is more difficult to recognize t
 
 - install python-pip on your os, e.g (Ubuntu/Arch Linux).:
 
-`sudo apt-get install python-pip` or `sudo pacamn -S python2-pip`
+`sudo apt-get install python-pip` or `sudo pacamn -S python-pip`
 
 - install svgwrite with pip e.g.:
 
-`sudo pip install svgwrite` or `sudo pip2.7 install svgwrite`
+`sudo pip install svgwrite`
 
 
 ## usage
