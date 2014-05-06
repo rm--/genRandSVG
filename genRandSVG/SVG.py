@@ -7,7 +7,7 @@ import os
 import random
 
 
-class SVG:
+class SVG(object):
 
     ''' SVG '''
 

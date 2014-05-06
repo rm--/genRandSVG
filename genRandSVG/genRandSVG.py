@@ -64,7 +64,7 @@ def main():
         MAX_ATTEMPTS_TO_GET_NEW_POINT = 30
 
 
-    g = gen.generator(WIDTH, HEIGHT, DISTANCE_BW_POINTS, NUM_ELEMENTS_IN_SVG,
+    g = gen.Generator(WIDTH, HEIGHT, DISTANCE_BW_POINTS, NUM_ELEMENTS_IN_SVG,
                                                  MAX_ATTEMPTS_TO_GET_NEW_POINT)
     for i in range(numberImages):
         print("SVG #" + str(i))

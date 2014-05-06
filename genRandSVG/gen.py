@@ -5,7 +5,7 @@ import SVG
 import random
 
 
-class generator:
+class Generator(object):
     def __init__(self, WIDTH, HEIGHT, DISTANCE_BETWEEN_POINTS, 
             NUM_ELEMENTS_IN_SVG, MAX_ATTEMPTS_TO_GET_NEW_POINT):
         self.lastPoints = []
